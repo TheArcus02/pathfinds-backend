@@ -1,8 +1,10 @@
 from flask import Flask, request, jsonify
 from algorithms.bfs import bfs
 from utils import generate_board
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 
 @app.route('/api/board', methods=['POST'])
@@ -12,8 +14,6 @@ def get_board():
     finish = data.get('finish')
     total_cols = data.get('totalCols')
     total_rows = data.get('totalRows')
-
-    print(start, finish, total_cols, total_rows)
 
     board = generate_board(start, finish, total_cols, total_rows)
 
