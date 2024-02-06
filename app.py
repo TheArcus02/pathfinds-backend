@@ -20,14 +20,18 @@ def get_board():
     return jsonify(board)
 
 
-@app.route('/bfs')
+@app.route('/api/bfs', methods=['POST'])
 def bfs_endpoint():
     data = request.get_json()
     nodes = data.get('nodes')
     start_node = data.get('startNode')
     end_node = data.get('endNode')
 
+    print(start_node, end_node)
+
     res = bfs(nodes, start_node, end_node)
+
+    print(res)
 
     return jsonify(res)
 

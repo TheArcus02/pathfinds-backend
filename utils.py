@@ -1,7 +1,8 @@
 from node import Node
+from typing import List
 
 
-def get_closest_neighbors(node, grid):
+def get_closest_neighbors(node: Node, grid: List[List[Node]]) -> List[Node]:
     neighbors = []
     directions = [(0, -1), (0, 1), (-1, 0), (1, 0)]  # Up, Down, Left, Right
     for d in directions:
