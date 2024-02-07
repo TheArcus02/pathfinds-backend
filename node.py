@@ -9,6 +9,7 @@ class Node:
         self.distance = float('inf')
         self.weight = weight
         self.heuristic = float('inf')
+        self.total_cost = float('inf')
         self.is_visited = False
         self.when_visited = 0
         self.is_wall = is_wall
@@ -25,6 +26,7 @@ class Node:
             'distance': 1e9 if self.distance == float('inf') else self.distance,
             'weight': self.weight,
             'heuristic': 1e9 if self.heuristic == float('inf') else self.heuristic,
+            'totalCost': 1e9 if self.total_cost == float('inf') else self.total_cost,
             'isVisited': self.is_visited,
             'whenVisited': self.when_visited,
             'isWall': self.is_wall,
@@ -35,10 +37,13 @@ class Node:
         }
 
     def __lt__(self, other):
-        return self.distance < other.distance
+        return self.total_cost < other.total_cost
 
     def __gt__(self, other):
-        return self.distance > other.distance
+        return self.total_cost > other.total_cost
 
     def __repr__(self):
-        return f"Node({self.row}, {self.col}, distance={self.distance})"
+        return f"Node({self.row}, {self.col}," \
+               f" distance={self.distance}," \
+               f" heuristic={self.heuristic}," \
+               f" total_cost={self.total_cost})"

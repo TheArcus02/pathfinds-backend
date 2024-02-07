@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from algorithms.bfs import bfs
 from algorithms.dfs import dfs
 from algorithms.dijkstra import dijkstra
+from algorithms.astar import astar
 from utils import generate_board
 from flask_cors import CORS
 
@@ -54,6 +55,18 @@ def dijkstra_endpoint():
     end_node = data.get('endNode')
 
     res = dijkstra(nodes, start_node, end_node)
+
+    return jsonify(res)
+
+
+@app.route('/api/astar', methods=['POST'])
+def astar_endpoint():
+    data = request.get_json()
+    nodes = data.get('nodes')
+    start_node = data.get('startNode')
+    end_node = data.get('endNode')
+
+    res = astar(nodes, start_node, end_node)
 
     return jsonify(res)
 

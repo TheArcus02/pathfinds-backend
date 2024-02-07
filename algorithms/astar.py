@@ -1,12 +1,16 @@
 import heapq
-from typing import List
 from node import Node
+from typing import List
 from utils import get_closest_neighbors
 
 
-def dijkstra(nodes, start_node, end_node) -> List[Node]:
+def heuristic(node: Node, end_node: Node) -> float:
+    return abs(node.row - end_node.row) + abs(node.col - end_node.col)
+
+
+def astar(nodes, start_node, end_node) -> List[Node]:
     """
-    Dijkstra pathfinding algorithm
+    A* pathfinding algorithm
 
     :param nodes: list of node objects
     :param start_node: starting node col and row
@@ -30,12 +34,15 @@ def dijkstra(nodes, start_node, end_node) -> List[Node]:
     start_node = grid[start_node['row']][start_node['col']]
     end_node = grid[end_node['row']][end_node['col']]
 
-    priority_queue = [start_node]
-
     start_node.distance = 0
+    start_node.heuristic = heuristic(start_node, end_node)
+    start_node.total_cost = start_node.heuristic
 
-    while priority_queue:
-        current_node = heapq.heappop(priority_queue)
+    open_set: List[Node] = []
+    heapq.heappush(open_set, start_node)
+
+    while open_set:
+        current_node = heapq.heappop(open_set)
 
         if current_node.is_visited:
             continue
@@ -49,11 +56,13 @@ def dijkstra(nodes, start_node, end_node) -> List[Node]:
             return visited_in_order
 
         for n in get_closest_neighbors(current_node, grid):
-            temp_distance = current_node.distance + n.weight + 1
+            tentative_g_score = current_node.distance + n.weight + 1
 
-            if temp_distance < n.distance:
-                n.distance = temp_distance
-                n.total_cost = temp_distance
+            if tentative_g_score < n.distance:
                 n.previous_node = current_node
-                heapq.heappush(priority_queue, n)
+                n.distance = tentative_g_score
+                n.heuristic = heuristic(n, end_node)
+                n.total_cost = n.distance + n.heuristic
+
+                heapq.heappush(open_set, n)
     return visited_in_order
