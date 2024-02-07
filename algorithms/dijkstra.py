@@ -1,18 +1,18 @@
+import heapq
 from typing import List
 from node import Node
 from utils import get_closest_neighbors
 
 
-def dfs(nodes, start_node, end_node) -> List[Node]:
+def dijkstra(nodes, start_node, end_node) -> List[Node]:
     """
-    Depth first search pathfinding algorithm
+    Dijkstra pathfinding algorithm
 
     :param nodes: list of node objects
     :param start_node: starting node col and row
     :param end_node: ending node col and row
     :return: nodes visited in order
     """
-
     visits = 0
     visited_in_order = []
 
@@ -22,17 +22,20 @@ def dfs(nodes, start_node, end_node) -> List[Node]:
     grid = [[Node(row=i, col=j,
                   is_wall=node['isWall'],
                   is_start=node['isStart'],
-                  is_finish=node['isFinish'])
+                  is_finish=node['isFinish'],
+                  weight=node['weight'])
              for j, node in enumerate(row)]
             for i, row in enumerate(nodes)]
 
     start_node = grid[start_node['row']][start_node['col']]
     end_node = grid[end_node['row']][end_node['col']]
 
-    stack = [start_node]
+    priority_queue = [start_node]
 
-    while stack:
-        current_node = stack.pop()
+    start_node.distance = 0
+
+    while priority_queue:
+        current_node = heapq.heappop(priority_queue)
 
         if current_node.is_visited:
             continue
@@ -45,11 +48,11 @@ def dfs(nodes, start_node, end_node) -> List[Node]:
         if current_node == end_node:
             return visited_in_order
 
-        neighbors = get_closest_neighbors(current_node, grid)
+        for n in get_closest_neighbors(current_node, grid):
+            temp_distance = current_node.distance + n.weight + 1
 
-        for n in neighbors:
-            if not n.is_visited:
+            if temp_distance < n.distance:
+                n.distance = temp_distance
                 n.previous_node = current_node
-                stack.append(n)
-
+                heapq.heappush(priority_queue, n)
     return visited_in_order

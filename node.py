@@ -6,9 +6,9 @@ class Node:
                  is_finish=False, is_path=False):
         self.col = col
         self.row = row
-        self.distance = 1e9
+        self.distance = float('inf')
         self.weight = weight
-        self.heuristic = 1e9
+        self.heuristic = float('inf')
         self.is_visited = False
         self.when_visited = 0
         self.is_wall = is_wall
@@ -22,9 +22,9 @@ class Node:
         return {
             'col': self.col,
             'row': self.row,
-            'distance': self.distance,
+            'distance': 1e9 if self.distance == float('inf') else self.distance,
             'weight': self.weight,
-            'heuristic': self.heuristic,
+            'heuristic': 1e9 if self.heuristic == float('inf') else self.heuristic,
             'isVisited': self.is_visited,
             'whenVisited': self.when_visited,
             'isWall': self.is_wall,
@@ -33,3 +33,12 @@ class Node:
             'isPath': self.is_path,
             'previousNode': self.previous_node.to_dict() if self.previous_node else None,
         }
+
+    def __lt__(self, other):
+        return self.distance < other.distance
+
+    def __gt__(self, other):
+        return self.distance > other.distance
+
+    def __repr__(self):
+        return f"Node({self.row}, {self.col}, distance={self.distance})"

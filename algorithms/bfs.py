@@ -6,7 +6,7 @@ from typing import List
 
 def bfs(nodes, start_node, end_node) -> List[Node]:
     """
-    Breath first search algorithm
+    Breath first search pathfinding algorithm
 
     :param nodes: list of node objects
     :param start_node: starting node col and row
