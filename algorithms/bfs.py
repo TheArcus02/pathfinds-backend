@@ -1,6 +1,6 @@
 from node import Node
 from collections import deque
-from utils import get_closest_neighbors
+from utils import get_closest_neighbors, init_grid
 from typing import List
 
 
@@ -19,12 +19,7 @@ def bfs(nodes, start_node, end_node) -> List[Node]:
     rows = len(nodes)
     cols = len(nodes[0]) if rows > 0 else 0
 
-    grid = [[Node(row=i, col=j,
-                  is_wall=node['isWall'],
-                  is_start=node['isStart'],
-                  is_finish=node['isFinish'])
-             for j, node in enumerate(row)]
-            for i, row in enumerate(nodes)]
+    grid = init_grid(nodes)
 
     start_node = grid[start_node['row']][start_node['col']]
     end_node = grid[end_node['row']][end_node['col']]

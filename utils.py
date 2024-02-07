@@ -13,6 +13,27 @@ def get_closest_neighbors(node: Node, grid: List[List[Node]]) -> List[Node]:
     return neighbors
 
 
+def get_wall_neighbors(node: Node, grid: List[List[Node]]) -> List[Node]:
+    neighbors = []
+    directions = [(0, 2), (2, 0), (0, -2), (-2, 0)]
+
+    for d in directions:
+        row, col = node.row + d[1], node.col + d[0]
+        if 0 <= row < len(grid) and 0 <= col < len(grid[0]):
+            neighbors.append(grid[row][col])
+    return neighbors
+
+
+def init_grid(nodes, for_maze=False) -> List[List[Node]]:
+    return [[Node(row=i, col=j,
+                  is_wall=True if for_maze else node['isWall'],
+                  is_start=node['isStart'],
+                  is_finish=node['isFinish'],
+                  weight=node['weight'])
+             for j, node in enumerate(row)]
+            for i, row in enumerate(nodes)]
+
+
 def generate_board(start, finish, total_cols: int, total_rows: int):
     nodes = [
         [

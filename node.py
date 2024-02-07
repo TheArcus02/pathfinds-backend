@@ -36,6 +36,9 @@ class Node:
             'previousNode': self.previous_node.to_dict() if self.previous_node else None,
         }
 
+    def set_is_wall(self, value: bool):
+        self.is_wall = value
+
     def __lt__(self, other):
         return self.total_cost < other.total_cost
 

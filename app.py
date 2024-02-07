@@ -3,6 +3,7 @@ from algorithms.bfs import bfs
 from algorithms.dfs import dfs
 from algorithms.dijkstra import dijkstra
 from algorithms.astar import astar
+from algorithms.prim_maze import generate_maze
 from utils import generate_board
 from flask_cors import CORS
 
@@ -67,6 +68,16 @@ def astar_endpoint():
     end_node = data.get('endNode')
 
     res = astar(nodes, start_node, end_node)
+
+    return jsonify(res)
+
+
+@app.route('/api/maze', methods=['POST'])
+def maze_endpoint():
+    data = request.get_json()
+    nodes = data.get('nodes')
+
+    res = generate_maze(nodes)
 
     return jsonify(res)
 
