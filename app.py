@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 from algorithms.bfs import bfs
+from algorithms.dfs import dfs
 from utils import generate_board
 from flask_cors import CORS
 
@@ -27,11 +28,19 @@ def bfs_endpoint():
     start_node = data.get('startNode')
     end_node = data.get('endNode')
 
-    print(start_node, end_node)
-
     res = bfs(nodes, start_node, end_node)
 
-    print(res)
+    return jsonify(res)
+
+
+@app.route('/api/dfs', methods=['POST'])
+def dfs_endpoint():
+    data = request.get_json()
+    nodes = data.get('nodes')
+    start_node = data.get('startNode')
+    end_node = data.get('endNode')
+
+    res = dfs(nodes, start_node, end_node)
 
     return jsonify(res)
 
